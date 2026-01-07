@@ -39,7 +39,8 @@ public class UserService {
         user.setName(name);
         user.setEmail(email);
         user.setPassword(passwordEncoder.encode(password));
-        user.setRole("USER");
+        user.setRole("ROLE_USER");
+
 
         return userRepository.save(user);
     }
@@ -57,6 +58,7 @@ public class UserService {
 
         }
 
-        return jwtUtil.generateToken(user.getEmail());
+        return jwtUtil.generateToken(user.getEmail(), user.getRole());
+
     }
 }

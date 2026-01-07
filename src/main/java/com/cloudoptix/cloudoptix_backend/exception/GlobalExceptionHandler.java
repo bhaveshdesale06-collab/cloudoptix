@@ -4,6 +4,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.security.access.AccessDeniedException;
 
 import java.time.LocalDateTime;
 import java.util.HashMap;
@@ -33,6 +34,18 @@ public class GlobalExceptionHandler {
 
         return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
     }
+
+    @ExceptionHandler(AccessDeniedException.class)
+public ResponseEntity<Map<String, Object>> handleAccessDenied(AccessDeniedException ex) {
+
+    Map<String, Object> response = new HashMap<>();
+    response.put("status", HttpStatus.FORBIDDEN.value());
+    response.put("error", "Access denied");
+    response.put("timestamp", LocalDateTime.now());
+
+    return new ResponseEntity<>(response, HttpStatus.FORBIDDEN);
+}
+
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<Map<String, Object>> handleGeneric(Exception ex) {
