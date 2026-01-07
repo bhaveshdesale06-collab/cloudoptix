@@ -1,10 +1,14 @@
 package com.cloudoptix.cloudoptix_backend.service;
 
+import com.cloudoptix.cloudoptix_backend.exception.UnauthorizedException;
 import com.cloudoptix.cloudoptix_backend.model.User;
 import com.cloudoptix.cloudoptix_backend.repository.UserRepository;
 import com.cloudoptix.cloudoptix_backend.security.JwtUtil;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import com.cloudoptix.cloudoptix_backend.exception.BadRequestException;
+
+
 
 @Service
 public class UserService {
@@ -27,7 +31,8 @@ public class UserService {
     public User registerUser(String name, String email, String password) {
 
         if (userRepository.findByEmail(email).isPresent()) {
-            throw new RuntimeException("Email already registered");
+            throw new BadRequestException("Email already registered");
+
         }
 
         User user = new User();
@@ -48,7 +53,8 @@ public class UserService {
                 .orElseThrow(() -> new RuntimeException("Invalid credentials"));
 
         if (!passwordEncoder.matches(password, user.getPassword())) {
-            throw new RuntimeException("Invalid credentials");
+            throw new UnauthorizedException("Invalid credentials");
+
         }
 
         return jwtUtil.generateToken(user.getEmail());
