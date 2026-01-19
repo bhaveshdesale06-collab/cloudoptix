@@ -19,6 +19,8 @@ public class MetricSchedulerService {
     private final CloudAccountRepository cloudAccountRepository;
     private final MetricRepository metricRepository;
     private final WasteDetectionService wasteDetectionService;
+    private final OptimizationService optimizationService;
+
 
 
     private final Random random = new Random();
@@ -41,6 +43,8 @@ public class MetricSchedulerService {
 
             metricRepository.save(metric);
             wasteDetectionService.analyze(account);
+            optimizationService.generateRecommendations(account);
+
 
         }
         
