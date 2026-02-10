@@ -1,4 +1,4 @@
-# ---- Build stage ----
+# ---------- Build stage ----------
 FROM eclipse-temurin:17-jdk AS build
 
 WORKDIR /app
@@ -7,21 +7,23 @@ WORKDIR /app
 COPY mvnw .
 COPY .mvn .mvn
 
-# ✅ FIX: make mvnw executable
+# ✅ Make mvnw executable (Linux requirement)
 RUN chmod +x mvnw
 
-# Download dependencies (cache layer)
+# ✅ Copy pom.xml BEFORE running Maven
+COPY pom.xml .
+
+# Download dependencies (cacheable layer)
 RUN ./mvnw dependency:go-offline
 
 # Copy source code
 COPY src src
-COPY pom.xml .
 
 # Build application
 RUN ./mvnw clean package -DskipTests
 
 
-# ---- Runtime stage ----
+# ---------- Runtime stage ----------
 FROM eclipse-temurin:17-jre
 
 WORKDIR /app
@@ -30,4 +32,4 @@ COPY --from=build /app/target/*.jar app.jar
 
 EXPOSE 8080
 
-ENTRYPOINT ["java","-jar","app.jar"]
+ENTRYPOINT ["java", "-jar", "app.jar"]
