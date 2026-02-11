@@ -39,12 +39,19 @@ protected void doFilterInternal(HttpServletRequest request,
 
             var authority = new org.springframework.security.core.authority.SimpleGrantedAuthority(role);
 
-            UsernamePasswordAuthenticationToken authentication =
-                    new UsernamePasswordAuthenticationToken(
-                            email,
-                            null,
-                            java.util.List.of(authority)
-                    );
+            var userDetails = org.springframework.security.core.userdetails.User
+        .withUsername(email)
+        .password("") // password not needed here
+        .authorities(authority)
+        .build();
+
+UsernamePasswordAuthenticationToken authentication =
+        new UsernamePasswordAuthenticationToken(
+                userDetails,
+                null,
+                userDetails.getAuthorities()
+        );
+
 
             authentication.setDetails(
                     new WebAuthenticationDetailsSource().buildDetails(request)
