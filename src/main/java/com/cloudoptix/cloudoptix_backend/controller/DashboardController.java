@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -27,73 +26,74 @@ public class DashboardController {
     private final DashboardService dashboardService;
 
     @GetMapping("/summary")
-    @PreAuthorize("hasAnyRole('ADMIN','USER')")
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN','ROLE_USER')")
     public DashboardSummaryResponse getSummary() {
         return dashboardService.getSummary();
     }
 
     @GetMapping("/waste")
-@PreAuthorize("hasAnyRole('ADMIN','USER')")
-public List<WasteFindingResponse> getWasteFindings() {
-    return dashboardService.getAllWaste();
-}
-@GetMapping("/recommendations")
-@PreAuthorize("hasAnyRole('ADMIN','USER')")
-public List<OptimizationRecommendationResponse> getRecommendations() {
-    return dashboardService.getAllRecommendations();
-}
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN','ROLE_USER')")
+    public List<WasteFindingResponse> getWasteFindings() {
+        return dashboardService.getAllWaste();
+    }
 
-@GetMapping("/waste/{cloudAccountId}")
-@PreAuthorize("hasAnyRole('ADMIN','USER')")
-public List<WasteFindingResponse> getWasteByAccount(
-        @PathVariable Long cloudAccountId
-) {
-    return dashboardService.getWasteByCloudAccount(cloudAccountId);
-}
+    @GetMapping("/recommendations")
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN','ROLE_USER')")
+    public List<OptimizationRecommendationResponse> getRecommendations() {
+        return dashboardService.getAllRecommendations();
+    }
 
-@GetMapping("/recommendations/{cloudAccountId}")
-@PreAuthorize("hasAnyRole('ADMIN','USER')")
-public List<OptimizationRecommendationResponse> getRecommendationsByAccount(
-        @PathVariable Long cloudAccountId
-) {
-    return dashboardService.getRecommendationsByCloudAccount(cloudAccountId);
-}
+    @GetMapping("/waste/{cloudAccountId}")
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN','ROLE_USER')")
+    public List<WasteFindingResponse> getWasteByAccount(
+            @PathVariable Long cloudAccountId
+    ) {
+        return dashboardService.getWasteByCloudAccount(cloudAccountId);
+    }
 
-@GetMapping("/waste/{cloudAccountId}/range")
-@PreAuthorize("hasAnyRole('ADMIN','USER')")
-public List<WasteFindingResponse> getWasteByAccountAndTime(
-        @PathVariable Long cloudAccountId,
-        @RequestParam LocalDateTime from,
-        @RequestParam LocalDateTime to
-) {
-    return dashboardService.getWasteByAccountAndTime(cloudAccountId, from, to);
-}
-@GetMapping("/recommendations/{cloudAccountId}/range")
-@PreAuthorize("hasAnyRole('ADMIN','USER')")
-public List<OptimizationRecommendationResponse> getRecommendationsByAccountAndTime(
-        @PathVariable Long cloudAccountId,
-        @RequestParam LocalDateTime from,
-        @RequestParam LocalDateTime to
-) {
-    return dashboardService.getRecommendationsByAccountAndTime(
-            cloudAccountId, from, to
-    );
-}
+    @GetMapping("/recommendations/{cloudAccountId}")
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN','ROLE_USER')")
+    public List<OptimizationRecommendationResponse> getRecommendationsByAccount(
+            @PathVariable Long cloudAccountId
+    ) {
+        return dashboardService.getRecommendationsByCloudAccount(cloudAccountId);
+    }
 
-@GetMapping("/report/{cloudAccountId}")
-@PreAuthorize("hasAnyRole('ADMIN','USER')")
-public ReportSummaryResponse getReportSummary(
-        @PathVariable Long cloudAccountId,
+    @GetMapping("/waste/{cloudAccountId}/range")
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN','ROLE_USER')")
+    public List<WasteFindingResponse> getWasteByAccountAndTime(
+            @PathVariable Long cloudAccountId,
+            @RequestParam LocalDateTime from,
+            @RequestParam LocalDateTime to
+    ) {
+        return dashboardService.getWasteByAccountAndTime(cloudAccountId, from, to);
+    }
 
-        @RequestParam
-        @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
-        LocalDateTime from,
+    @GetMapping("/recommendations/{cloudAccountId}/range")
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN','ROLE_USER')")
+    public List<OptimizationRecommendationResponse> getRecommendationsByAccountAndTime(
+            @PathVariable Long cloudAccountId,
+            @RequestParam LocalDateTime from,
+            @RequestParam LocalDateTime to
+    ) {
+        return dashboardService.getRecommendationsByAccountAndTime(
+                cloudAccountId, from, to
+        );
+    }
 
-        @RequestParam
-        @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
-        LocalDateTime to
-) {
-    return dashboardService.getReportSummary(cloudAccountId, from, to);
-}
+    @GetMapping("/report/{cloudAccountId}")
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN','ROLE_USER')")
+    public ReportSummaryResponse getReportSummary(
+            @PathVariable Long cloudAccountId,
 
+            @RequestParam
+            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
+            LocalDateTime from,
+
+            @RequestParam
+            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
+            LocalDateTime to
+    ) {
+        return dashboardService.getReportSummary(cloudAccountId, from, to);
+    }
 }
