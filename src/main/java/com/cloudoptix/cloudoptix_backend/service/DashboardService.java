@@ -15,6 +15,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.Optional;
+import org.springframework.transaction.annotation.Transactional;
 
 
 
@@ -47,7 +48,7 @@ public class DashboardService {
                 .totalEstimatedMonthlySavings(totalSavings)
                 .build();
     }
-
+    @Transactional(readOnly = true)
     public List<WasteFindingResponse> getAllWaste() {
 
     return wasteFindingRepository.findAll()
@@ -66,7 +67,7 @@ public class DashboardService {
 .build())
             .collect(Collectors.toList());
 }
-
+@Transactional(readOnly = true)
 public List<OptimizationRecommendationResponse> getAllRecommendations() {
 
     return recommendationRepository.findAll()
