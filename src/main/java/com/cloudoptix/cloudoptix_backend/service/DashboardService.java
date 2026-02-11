@@ -59,9 +59,11 @@ public class DashboardService {
                     .description(waste.getDescription())
                     .detectedAt(waste.getDetectedAt())
                     .cloudAccountName(
-                            waste.getCloudAccount().getAccountName()
-                    )
-                    .build())
+    waste.getCloudAccount() != null 
+        ? waste.getCloudAccount().getAccountName() 
+        : "Unknown"
+)
+.build())
             .collect(Collectors.toList());
 }
 
@@ -76,8 +78,11 @@ public List<OptimizationRecommendationResponse> getAllRecommendations() {
                     .estimatedMonthlySavings(rec.getEstimatedMonthlySavings())
                     .createdAt(rec.getCreatedAt())
                     .cloudAccountName(
-                            rec.getCloudAccount().getAccountName()
-                    )
+    rec.getCloudAccount() != null 
+        ? rec.getCloudAccount().getAccountName() 
+        : "Unknown"
+)
+
                     .build())
             .collect(Collectors.toList());
 }
