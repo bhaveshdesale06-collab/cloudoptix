@@ -56,7 +56,7 @@ public class SecurityConfig {
 
         configuration.setAllowedOrigins(List.of(
                 "http://localhost:5173",
-                "https://cloudoptix-frontend.up.railway.app"
+                "https://cloudoptix-frontend.vercel.app"
         ));
 
         configuration.setAllowedMethods(List.of(
